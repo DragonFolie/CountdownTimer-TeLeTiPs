@@ -31,11 +31,11 @@
         }
     },
     "formation": {
-    "worker": {
-      "quantity": 1,
-      "size": "free"
-    }
-  },
+        "worker": {
+            "quantity": 1,
+            "size": "Eco"
+        }
+    },
     "buildpacks": [
         {
             "url": "heroku/python"
