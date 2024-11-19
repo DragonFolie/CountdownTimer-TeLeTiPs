@@ -15,36 +15,22 @@ footer_message = os.environ["FOOTER_MESSAGE"]
 stoptimer = False
 
 
-@bot.on_message(filters.command('set') & (filters.group | filters.private))
 @bot.on_channel_post(filters.regex(r'^/set \d+ ".*"$'))
-async def set_timer(client, message):
+async def set_timer_channel(client, message):
     global stoptimer
     try:
-        # Обробка для каналів
-        if message.chat.type == "channel":
-            command_parts = message.text.split(" ", 2)
-            if len(command_parts) < 3:
-                return await client.send_message(
-                    message.chat.id,
-                    '❌ **Некоректний формат.**\n\n✅ Формат:\n<code>/set секунди "подія"</code>\n\n**Приклад**:\n<code>/set 10 "Таймер на 10 секунд"</code>'
-                )
+        # Розділення команди на параметри
+        command_parts = message.text.split(" ", 2)
+        if len(command_parts) < 3:
+            return await client.send_message(
+                message.chat.id,
+                '❌ **Некоректний формат.**\n\n✅ Формат:\n<code>/set секунди "подія"</code>\n\n**Приклад**:\n<code>/set 10 "Таймер на 10 секунд"</code>'
+            )
 
-            user_input_time = int(command_parts[1])
-            user_input_event = command_parts[2].strip('"')
-            sent_message = await client.send_message(message.chat.id, "⏳ Таймер встановлено!")
-        else:
-            # Перевірка прав адміністратора для груп
-            user_member = await client.get_chat_member(message.chat.id, message.from_user.id)
-            if not user_member.privileges:
-                return await message.reply("👮🏻‍♂️ Вибачте, тільки адміністратори можуть виконувати цю команду.")
+        user_input_time = int(command_parts[1])
+        user_input_event = command_parts[2].strip('"')
 
-            # Перевірка на коректність формату команди
-            if len(message.command) < 3:
-                return await message.reply('❌ **Некоректний формат.**\n\n✅ Формат:\n<code>/set секунди "подія"</code>\n\n**Приклад**:\n<code>/set 10 "Таймер на 10 секунд"</code>')
-
-            user_input_time = int(message.command[1])
-            user_input_event = str(message.command[2])
-            sent_message = await client.send_message(message.chat.id, "⏳ Таймер встановлено!")
+        sent_message = await client.send_message(message.chat.id, f"⏳ Таймер: {user_input_event}")
 
         stoptimer = False
 
@@ -68,21 +54,13 @@ async def set_timer(client, message):
     except FloodWait as e:
         await asyncio.sleep(e.value)
     except Exception as e:
-        if message.chat.type == "channel":
-            await client.send_message(message.chat.id, f"⚠️ Помилка: {str(e)}")
-        else:
-            await message.reply(f"⚠️ Помилка: {str(e)}")
+        await client.send_message(message.chat.id, f"⚠️ Помилка: {str(e)}")
 
 
-@bot.on_message(filters.command('stopc') & (filters.group | filters.private))
 @bot.on_channel_post(filters.regex(r'^/stopc$'))
-async def stop_timer(client, message):
+async def stop_timer_channel(client, message):
     global stoptimer
     try:
-        if message.chat.type != "channel":
-            user_member = await client.get_chat_member(message.chat.id, message.from_user.id)
-            if not user_member.privileges:
-                return await message.reply("👮🏻‍♂️ Вибачте, тільки адміністратори можуть виконувати цю команду.")
         stoptimer = True
         await client.send_message(message.chat.id, "🛑 Відлік зупинено.")
     except FloodWait as e:
