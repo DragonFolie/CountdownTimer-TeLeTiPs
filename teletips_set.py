@@ -46,7 +46,7 @@ async def set_timer_channel(client, message: Message):
                 user_input_time % 3600 // 60,
                 user_input_time % 60,
             )
-            countdown_text = f'{user_input_event}\n\n⏳ **{h:02d}****г** **{m:02d}****хв** **{s:02d}****с**\n\n<i>{footer_message}</i>'
+            countdown_text = f'{user_input_event}\n\n⏳ **{h:02d}**  **г** {m:02d}**хв** {s:02d}**с**\n\n<i>{footer_message}</i>'
             await sent_message.edit_text(countdown_text)
             await asyncio.sleep(3 if user_input_time > 10 else 1)
             user_input_time -= 3 if user_input_time > 10 else 1
