@@ -11,7 +11,7 @@ bot = Client(
     bot_token=os.environ["BOT_TOKEN"]
 )
 
-footer_message = os.environ["FOOTER_MESSAGE"]
+footer_message = os.environ.get("FOOTER_MESSAGE", "Це повідомлення від вашого бота.")
 stoptimer = False
 
 
@@ -19,6 +19,12 @@ stoptimer = False
 async def set_timer_channel(client, message: Message):
     global stoptimer
     try:
+        if not message.chat:
+            return await client.send_message(
+                message.chat.id,
+                "❌ Не вдалося отримати інформацію про чат."
+            )
+        
         # Розділення команди на параметри
         command_parts = message.text.split(" ", 2)
         if len(command_parts) < 3:
