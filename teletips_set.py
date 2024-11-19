@@ -7,7 +7,7 @@ from pyrogram.errors import FloodWait
 bot = Client(
     "Countdown-TeLeTiPs",
     api_id=int(os.environ["API_ID"]),
-    api_hash=os.environ["API_HASH"],
+    api_hash=os.environ["API_HASH"]),
     bot_token=os.environ["BOT_TOKEN"]
 )
 
@@ -19,13 +19,14 @@ stoptimer = False
 async def set_timer_channel(client, message: Message):
     global stoptimer
     try:
+        # Перевірка на наявність об'єкта chat
         if not message.chat:
             return await client.send_message(
                 message.chat.id,
                 "❌ Не вдалося отримати інформацію про чат."
             )
-        
-        # Розділення команди на параметри
+
+        # Перевірка формату команди
         command_parts = message.text.split(" ", 2)
         if len(command_parts) < 3:
             return await client.send_message(
