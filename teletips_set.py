@@ -16,7 +16,7 @@ stoptimer = False
 
 
 @bot.on_channel_post(filters.regex(r'^/set \d+ ".*"$'))
-async def set_timer_channel(client, message):
+async def set_timer_channel(client, message: Message):
     global stoptimer
     try:
         # Розділення команди на параметри
@@ -58,7 +58,7 @@ async def set_timer_channel(client, message):
 
 
 @bot.on_channel_post(filters.regex(r'^/stopc$'))
-async def stop_timer_channel(client, message):
+async def stop_timer_channel(client, message: Message):
     global stoptimer
     try:
         stoptimer = True
