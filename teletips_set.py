@@ -15,7 +15,7 @@ footer_message = os.environ.get("FOOTER_MESSAGE", "Це повідомлення
 stoptimer = False
 
 
-@bot.on_channel_post(filters.regex(r'^/set \d+ ".*"$'))
+@bot.on_message(filters.channel & filters.regex(r'^/set \d+ ".*"$'))
 async def set_timer_channel(client, message: Message):
     """
     Обробка команди для встановлення таймера у каналі.
@@ -62,7 +62,7 @@ async def set_timer_channel(client, message: Message):
         await client.send_message(message.chat.id, f"⚠️ Помилка: {str(e)}")
 
 
-@bot.on_channel_post(filters.regex(r'^/stopc$'))
+@bot.on_message(filters.channel & filters.regex(r'^/stopc$'))
 async def stop_timer_channel(client, message: Message):
     """
     Обробка команди для зупинки таймера у каналі.
