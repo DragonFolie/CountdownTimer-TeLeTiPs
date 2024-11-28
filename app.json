@@ -26,8 +26,8 @@
         },
         "FOOTER_MESSAGE": {
             "description": "A simple footer message for the countdown. This can be a short quote or something like that.",
-            "value": "x ",
-            "required": true
+            "value": "VAPORS",
+            "required": false
         }
     },
     "formation": {
